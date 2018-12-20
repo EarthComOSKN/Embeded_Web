@@ -92,8 +92,7 @@
             <div class="row center" style="margin-top:20px;"><p class="col center">Mode : {{ModeName[lightMode-1]}}</p></div>
             <!-- <compact-picker v-model="colors" /> -->
             <div class="container center" v-if="lightMode == 1" >
-              <p style="margin-top:30px;" >Light Speed</p>
-              <vue-slider ref="slider" v-model="value" min="1" max="10" style="margin-top:30px;"></vue-slider>
+
               <b-button style="margin-top:10px" @click="SetLight()">Set Light</b-button>
             </div>
             <div class="container center" v-if="lightMode == 2" >
@@ -101,16 +100,14 @@
               <Compact v-model="color1" />
               <p>Color 2</p>
               <Compact v-model="color2" />
-              <p style="margin-top:30px;" >Light Speed</p>
-              <vue-slider ref="slider" v-model="value" min="1" max="10" style="margin-top:30px;"></vue-slider>
+
               <b-button style="margin-top:10px" @click="SetLight()">Set Light</b-button>
             </div>
             <div class="container center" v-if="lightMode == 3" >
               <p>Color 1</p>
               <Compact v-model="color1" />
 
-              <p style="margin-top:30px;" >Light Speed</p>
-              <vue-slider ref="slider" v-model="value" min="1" max="10" style="margin-top:30px;"></vue-slider>
+
               <b-button style="margin-top:10px" @click="SetLight()">Set Light</b-button>
             </div>
             <div class="container center" v-if="lightMode == 4" >
@@ -118,36 +115,25 @@
               <Compact v-model="color1" />
               <p>Color 2</p>
               <Compact v-model="color2" />
-              <p style="margin-top:30px;" >Light Speed</p>
-              <vue-slider ref="slider" v-model="value" min="1" max="10" style="margin-top:30px;"></vue-slider>
+
               <b-button style="margin-top:10px" @click="SetLight()">Set Light</b-button>
             </div>
 
             
           </card>
+
+
         </div>
-        <!-- <div class="col-md-4">
+        <div class="col-md-4">
           <card>
             <template slot="header">
-              <h4 class="card-title">Temperature Statistics</h4>
-              <p class="card-category">Last Temperature</p>
+              <h4 class="card-title">Light Speed</h4>
             </template>
-            <div class="container center" >
-              <div class="row center">
-                <div class="col cc">
-                  {{parseInt(degree[degree.length-1])}}°C
-                </div>
-                <div class="col ci">
-                  <div class="container">
-                    <div class="row" style="color:red">↑ {{ parseInt(degree[degree.length-2]) - parseInt(degree[degree.length-1]) > 0 ? 0 : parseInt(degree[degree.length-1]) - parseInt(degree[degree.length-2])}}</div>
-                    <div class="row" style="color:blue">↓ {{ parseInt(degree[degree.length-2]) - parseInt(degree[degree.length-1]) < 0 ? 0 : parseInt(degree[degree.length-2]) - parseInt(degree[degree.length-1])}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <vue-slider ref="slider" v-model="value" min="1" max="10" style="margin-top:30px;"></vue-slider>
+            <b-button style="margin-top:10px" @click="SetLightSpeed()">Set LightSpeed</b-button>
             
           </card>
-        </div> -->
+        </div>
 
       </div>
     </div>
@@ -186,6 +172,7 @@
   var LightRef = database.ref('/embeded/Light')
   var Temper = database.ref('/temperature')
   var Embeded = database.ref('/embeded')
+  var LightSpeed = database.ref('/embeded/LightSpeed')
   export default {
     components: {
       Checkbox,
@@ -225,10 +212,14 @@
           lightMode:"0"+(this.lightMode-1),
           color1: cc1,
           color2: cc2,
-          lightSpeed: "0"+this.value
         }
-        if(this.value == 10 ) data.lightSpeed = "10"
         LightRef.set(data)
+      },
+      SetLightSpeed(){
+        console.log('set light speed');
+        let ls = "0"+this.value
+        if(this.value == 10) ls = "10"
+        LightSpeed.set(ls)
       },
       SetColor(R,G,B){
         const TR = Math.floor((R/256)*999)
